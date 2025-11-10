@@ -5,6 +5,8 @@ import viteLogo from "/vite.svg";
 
 function App() {
   const [color, setColor] = useState("#3498db");
+  const [favorites, setFavorites] = useState([]);
+  
   const generateColor = () => {
     const randomColor = "#" + Math.floor(Math.random() * 16777215).toString(16);
     setColor(randomColor);
@@ -12,6 +14,16 @@ function App() {
   const copyColor = () => {
     navigator.clipboard.writeText(color);
     alert(`Copied ${color} to clipboard`);
+  };
+  const addFavorite = ()=>{
+    if(!favorites.includes(color)){
+      setFavorites([...favorites, color])
+    }else{
+      alert("Color already saved!")
+    }
+  };
+  const removeFavorite = (c)=>{
+    setFavorites(favorites.filter((fav)=>fav !==c))
   };
 
   return (
@@ -41,7 +53,32 @@ function App() {
           >
             Copy
           </button>
-        </div>
+          <button
+            onClick={addFavorite}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+          >
+           Save
+          </button>
+           </div>
+         {favorites.length > 0 &&(
+          <div className="mt-6">
+            <h2 className="text-lg font-semibold mb-2">Saved Color</h2>
+            <div>
+              {favorites.map((fav)=>(
+                <div key={fav} className="flex flex-col items-center">
+                  <div className="w-12 h-12 rounded-lg border cursor-pointer"
+                  style={{backgroundColor:fav}}
+                  onClick={()=>setColor(fav)}>
+                    
+                  </div>
+                  <span className="text-sm mt-1">{fav}</span>
+                  <button onClick={()=>removeFavorite(fav)} className="text-xs text-red-500 hover:underline mb-2">Remove</button>
+                </div>
+              ))}
+            </div>
+          </div>
+         )}
+       
       </div>
     </div>
   );
