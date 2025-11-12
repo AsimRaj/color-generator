@@ -48,6 +48,17 @@ useEffect(() => {
   const removeFavorite = (c) => {
     setFavorites(favorites.filter((fav) => fav !== c));
   };
+  const clearAllFavorites = ()=>{
+    if(favorites.length ===0){
+      alert("No saved color to clear!");
+      return;
+    }
+    const confirmClear = window.confirm("Are you sure you want clear all saved colors?");
+    if(confirmClear){
+      setFavorites([]);
+      localStorage.removeItem("favorites")
+    }
+  }
 
   return (
     <div
@@ -85,7 +96,8 @@ useEffect(() => {
         </div>
         {favorites.length > 0 && (
           <div className="mt-6">
-            <h2 className="text-lg font-semibold mb-2">Saved Color</h2>
+            <h2 className="text-lg font-semibold mb-2">Saved Color
+            <button onClick={clearAllFavorites} className="text-xs ml-2 text-red-500 hover:underline">Clear All</button></h2>
             <div>
               {favorites.map((fav) => (
                 <div key={fav} className="flex flex-col items-center">
